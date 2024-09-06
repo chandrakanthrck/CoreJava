@@ -1,12 +1,11 @@
-package src.learn.collections.map;
+package src.learn.collections.map.treemap;
 
-import java.util.Map;
 import java.util.TreeMap;
 
-public class TreeMapWithGenerics {
+public class TreeMapWithoutGenerics {
     public static void main(String[] args) {
-        // Creating a TreeMap with generics
-        Map<String, Integer> map = new TreeMap<>();
+        // Creating a TreeMap without generics
+        TreeMap map = new TreeMap();
 
         // Adding key-value pairs (TreeMap maintains sorted order by key)
         map.put("Apple", 1);
@@ -18,12 +17,12 @@ public class TreeMapWithGenerics {
         System.out.println("Value of 'Apple': " + map.get("Apple"));
 
         // Iterating through the map
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        for (Object key : map.keySet()) {
+            System.out.println("Key: " + key + ", Value: " + map.get(key));
         }
 
         // Removing an element
-        map.remove("Banana");
+        map.remove("Cherry");
 
         // Checking size of the map
         System.out.println("Size of the map: " + map.size());

@@ -1,12 +1,11 @@
-package src.learn.collections.map;
+package src.learn.collections.map.linkedhashmap;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-public class LinkedHashMapWithGenerics {
+public class LinkedHashMapWithoutGenerics {
     public static void main(String[] args) {
-        // Creating a LinkedHashMap with generics
-        Map<String, Integer> map = new LinkedHashMap<>();
+        // Creating a LinkedHashMap without generics
+        LinkedHashMap map = new LinkedHashMap();
 
         // Adding key-value pairs
         map.put("Apple", 1);
@@ -18,8 +17,8 @@ public class LinkedHashMapWithGenerics {
         System.out.println("Value of 'Apple': " + map.get("Apple"));
 
         // Iterating through the map
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        for (Object key : map.keySet()) {
+            System.out.println("Key: " + key + ", Value: " + map.get(key));
         }
 
         // Removing an element

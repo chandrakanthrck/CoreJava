@@ -1,4 +1,4 @@
-package src.learn.collections.set;
+package src.learn.collections.set.linkedhashset;
 
 import java.util.LinkedHashSet;
 

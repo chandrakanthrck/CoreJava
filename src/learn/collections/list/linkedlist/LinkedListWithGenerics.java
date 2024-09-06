@@ -1,4 +1,4 @@
-package src.learn.collections.list;
+package src.learn.collections.list.linkedlist;
 
 import java.util.LinkedList;
 

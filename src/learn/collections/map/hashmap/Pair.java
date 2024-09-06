@@ -1,4 +1,4 @@
-package src.learn.collections.map;
+package src.learn.collections.map.hashmap;
 
 public class Pair {
     private String key;

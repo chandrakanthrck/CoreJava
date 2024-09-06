@@ -1,4 +1,4 @@
-package src.learn.collections.list;
+package src.learn.collections.list.vector;
 
 import java.util.Vector;
 

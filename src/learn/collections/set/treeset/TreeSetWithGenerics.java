@@ -1,4 +1,4 @@
-package src.learn.collections.set;
+package src.learn.collections.set.treeset;
 
 import java.util.TreeSet;
 
