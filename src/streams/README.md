@@ -29,7 +29,7 @@ To get started with these examples:
 
 2. Navigate to the directory containing the examples:
     ```bash
-    cd your-repo
+    cd streams
     ```
 
 3. Compile and run the Java files using your preferred Java development environment or command-line tools.
