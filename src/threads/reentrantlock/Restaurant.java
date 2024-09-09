@@ -2,6 +2,13 @@ package threads.reentrantlock;
 
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * ReentrantLock is a more flexible alternative to the synchronized keyword, providing explicit locking with features like fairness, tryLock, etc.
+ *
+ * Use Case: When you need finer control over locking mechanisms, such as trying to acquire a lock with timeout or handling deadlock scenarios.
+ * Example: Ensuring only one thread accesses a critical section in a complex multi-threaded environment while allowing more flexibility.
+ */
+
 class Restaurant {
     // Shared resource: The special ingredient storage room
     private static final ReentrantLock storageRoomLock = new ReentrantLock();

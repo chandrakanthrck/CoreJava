@@ -1,6 +1,7 @@
 package threads.reentrantlock;
 
-public class RestaurantWithLock {
+//main class which we can take as restaurant with locks
+public class Main {
     public static void main(String[] args) {
         // Create 3 chef threads
         Chef chef1 = new Chef("Chef 1");

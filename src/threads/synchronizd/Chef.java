@@ -1,5 +1,12 @@
 package threads.synchronizd;
 
+/**
+ * Synchronized is used to ensure that only one thread can access a block of code or a method at a time, preventing race conditions.
+ *
+ * Use Case: When multiple threads need to access shared resources, and you want to ensure thread safety by preventing concurrent access.
+ * Example: Managing shared resources like counters, data structures, or I/O operations across multiple threads.
+ */
+
 public class Chef extends Thread{
     private DishCounter counter;
     private String dishName;

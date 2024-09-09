@@ -1,6 +1,6 @@
 package threads.synchronizd;
-
-public class Restaurant {
+//take this main method as a restaurant
+public class Main {
     public static void main(String[] args) {
         DishCounter counter = new DishCounter();
         Chef chef1 = new Chef(counter, "Dish 1");
