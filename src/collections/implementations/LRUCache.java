@@ -2,106 +2,91 @@ package collections.implementations;
 
 import java.util.HashMap;
 
+//complexity is (O(1)) keeping track of the access order for eviction when cache exceeds its size
 public class LRUCache<K, V> {
-    private final int capacity;
-    private final HashMap<K, Node<K, V>> cache;
-    private Node<K, V> head, tail;
-
-    // Constructor to initialize LRU Cache with a given capacity
-    public LRUCache(int capacity) {
+    //this constructor allows user to provide a specific HashMap when creating an instance of LRUCache.
+    //here the map param is assigned to the cahce's internal map field, giving user flexibility in managing
+    //the underlying storage of the cache
+    public LRUCache(int capacity, HashMap<K, Node> map) {
         this.capacity = capacity;
-        this.cache = new HashMap<>();
+        this.map = map;
     }
 
-    // Get method to retrieve the value for a given key
-    public V get(K key) {
-        if (!cache.containsKey(key)) {
-            return null; // Key doesn't exist in cache
+    class Node{
+        K key;
+        V value;
+        Node prev;
+        Node next;
+        Node(K key, V value){
+            this.key = key;
+            this.value = value;
         }
+    }
+    //capcity of the cache
+    private final int capacity;
+    //hashmap to quick access to cache items
+    private final HashMap<K, Node> map;
+    //head and tail to keep a track of doubly linked list
+    private Node head, tail;
+    //this constructor is the more typical use case. It initializes the LRUCache with a fixed capacity and
+    //creates a new empty hashmap to manage the cache's items internally.
+    public LRUCache(int capacity){
+        //set cache size
+        this.capacity = capacity;
+        //initialize hashmap to store key-node mappings
+        this.map = new HashMap<>();
+    }
 
-        // Move the accessed node to the front (head)
-        Node<K, V> node = cache.get(key);
-        moveToHead(node);
-
+    private void addNode(Node node){
+        if(tail != null){
+            //point the current tail's 'next' to the new node
+            tail.next = node;
+            node.prev = tail;
+            node.next = null;
+        }else{
+            head = tail = node;
+        }
+    }
+    private void removeNode(Node node){
+        if(node.prev!=null){
+            // bypass 'node' by linking previous node to 'node's next
+            node.prev.next = node.next;
+        }else{
+            //update tail to be the previous node if node is the tail
+            head = node.next;
+        }
+    }
+    private void moveTail(Node node){
+        // first, remove it from its current position
+        removeNode(node);
+        // then, add it to the end of the list
+        addNode(node);
+    }
+    // Method to get the value associated with a key in the cache
+    public V get(K key){
+        if(!map.containsKey(key)){
+            return null;
+        }
+        Node node = map.get(key);
+        // mark this node as most recently used
+        moveTail(node);
         return node.value;
     }
 
-    // Put method to add or update the value for a given key
-    public void put(K key, V value) {
-        if (cache.containsKey(key)) {
-            // If key exists, update the value and move it to the head
-            Node<K, V> node = cache.get(key);
+    public void put(K key, V value){
+        if(map.containsKey(key)){
+            Node node = map.get(key);
             node.value = value;
-            moveToHead(node);
-        } else {
-            // Create a new node
-            Node<K, V> newNode = new Node<>(key, value);
-            cache.put(key, newNode);
-            addToHead(newNode);
-
-            // If cache exceeds capacity, remove the least recently used (tail)
-            if (cache.size() > capacity) {
-                cache.remove(tail.key);
-                removeTail();
+            moveTail(node);
+        }else{
+            Node newNode = new Node(key, value);
+            if(map.size() >= capacity){
+                map.remove(head.key);
+                removeNode(head);
             }
+            addNode(newNode);
+            map.put(key, newNode);
         }
     }
 
-    // Helper method to move a node to the head of the list
-    private void moveToHead(Node<K, V> node) {
-        removeNode(node);
-        addToHead(node);
-    }
-
-    // Helper method to remove a node from the list
-    private void removeNode(Node<K, V> node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
-        } else {
-            head = node.next; // Node is the head
-        }
-
-        if (node.next != null) {
-            node.next.prev = node.prev;
-        } else {
-            tail = node.prev; // Node is the tail
-        }
-    }
-
-    // Helper method to add a node to the head of the list
-    private void addToHead(Node<K, V> node) {
-        node.next = head;
-        node.prev = null;
-
-        if (head != null) {
-            head.prev = node;
-        }
-        head = node;
-
-        if (tail == null) {
-            tail = node; // If list was empty, set tail
-        }
-    }
-
-    // Helper method to remove the tail (least recently used item)
-    private void removeTail() {
-        if (tail != null) {
-            if (tail.prev != null) {
-                tail.prev.next = null;
-            } else {
-                head = null; // List becomes empty
-            }
-            tail = tail.prev;
-        }
-    }
-
-    // Method to display the cache for testing purposes
-    public void displayCache() {
-        Node<K, V> current = head;
-        while (current != null) {
-            System.out.print(current.key + ":" + current.value + " ");
-            current = current.next;
-        }
-        System.out.println();
-    }
 }
