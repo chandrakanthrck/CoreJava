@@ -11,7 +11,7 @@ public class LFUCache<K,V> {
         this.freqListMap = new HashMap<>();
     }
 
-    public class Node{
+    class Node{
         K key;
         V value;
         int frequency;
@@ -23,8 +23,9 @@ public class LFUCache<K,V> {
     }
     private final int capacity;
     private int minFrequency;
-    private final HashMap<K, Node> keyNodeMap;
+    private final HashMap<K, Node>  keyNodeMap;
     private final HashMap<Integer, LinkedHashSet<Node>> freqListMap;
+    //update frequency
     private void updateFrequency(Node node){
         int currentFreq = node.frequency;
         LinkedHashSet<Node> nodes = freqListMap.get(currentFreq);
@@ -41,31 +42,28 @@ public class LFUCache<K,V> {
         }
         Node node = keyNodeMap.get(key);
         updateFrequency(node);
-        return  node.value;
+        return node.value;
     }
     public void put(K key, V value){
         if(capacity <= 0){
-            //do nothing
             return;
         }
+        //if key already present, and we are trying to update the value and frequency
         if(keyNodeMap.containsKey(key)){
             Node node = keyNodeMap.get(key);
             node.value = value;
             updateFrequency(node);
         }else{
-            // If adding a new key and the cache is full, remove the least frequently used item
             if(keyNodeMap.size() >= capacity){
-                // Get the least frequently used nodes
                 LinkedHashSet<Node> minFreqNodes = freqListMap.get(minFrequency);
-                // Get the least recently used node
                 Node lfuNode = minFreqNodes.iterator().next();
                 minFreqNodes.remove(lfuNode);
                 keyNodeMap.remove(lfuNode.key);
             }
-            // Add the new node to the cache
+            //Add new node to cache
             Node newNode = new Node(key, value);
             keyNodeMap.put(key, newNode);
-            minFrequency = 1;
+            minFrequency = 1; //resetting min frequency to 1 for the new node
             freqListMap.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(newNode);
         }
     }

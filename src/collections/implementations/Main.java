@@ -7,6 +7,9 @@ public class Main {
 
         System.out.println("\nTesting LFU Cache:");
         testLFUCache();
+
+        System.out.println("\nTesting FIFO Cache:");
+        testFIFOCache();
     }
 
     private static void testLRUCache() {
@@ -48,5 +51,27 @@ public class Main {
         System.out.println(cache.get(3)); // Trying to access evicted key 3 -> Output: null
         System.out.println(cache.get(1)); // Access key 1 -> Output: "One"
         System.out.println(cache.get(4)); // Access key 4 -> Output: "Four"
+    }
+
+    private static void testFIFOCache() {
+        FIFOCache<Integer, String> cache = new FIFOCache<>(3); // Create a FIFO cache with a capacity of 3
+        cache.put(1, "One");
+        cache.put(2, "Two");
+        cache.put(3, "Three");
+
+        // The cache now contains {1=One, 2=Two, 3=Three}
+        System.out.println(cache.get(1)); // Output: "One"
+
+        cache.put(4, "Four"); // Adding a new item (4, "Four") will evict the oldest item (key 1)
+        // The cache now contains {2=Two, 3=Three, 4=Four}
+        System.out.println(cache.get(1)); // Trying to access evicted key 1 -> Output: null
+
+        cache.put(5, "Five"); // Adding a new item (5, "Five") will evict the oldest item (key 2)
+        // The cache now contains {3=Three, 4=Four, 5=Five}
+        System.out.println(cache.get(2)); // Trying to access evicted key 2 -> Output: null
+
+        System.out.println(cache.get(3)); // Output: "Three"
+        System.out.println(cache.get(4)); // Output: "Four"
+        System.out.println(cache.get(5)); // Output: "Five"
     }
 }
